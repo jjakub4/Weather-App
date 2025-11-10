@@ -138,3 +138,43 @@ label img {
   height: 45px;
   margin-bottom: 30px;
 }
+
+.forecast-main {
+  background: url(./assets/images/bg-today-small.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100%;
+  height: 200px;
+  border-radius: 13px;
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.location {
+  font-weight: 600;
+  font-size: 23px;
+  margin-bottom: 10px;
+}
+
+.date {
+  font-size: 13px;
+  color: var(--Neutral300);
+  font-weight: 400;
+}
+
+.weather {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  font-family: "DM Sans", monospace;
+  font-weight: 600;
+  font-size: 70px;
+  font-style: italic;
+}
+
+.weather img {
+  height: 100px;
+}
