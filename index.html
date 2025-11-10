@@ -12,6 +12,8 @@
       href="./assets/images/favicon-32x32.png"
     />
 
+    <link rel="stylesheet" href="style.css" />
+
     <title>Frontend Mentor | Weather app</title>
 
     <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
@@ -28,10 +30,30 @@
   <body>
     <header>
       <img src="/assets/images/logo.svg" alt="" />
-      Units
-      <div class="dropdown" style="display: none">
-        Switch to Imperial/Metric Temperature Celsius (°C) Fahrenheit (°F) Wind
-        Speed km/h mph Precipitation Millimeters (mm) Inches (in)
+      <div class="dropdown">
+        <button class="dropdown-toggle" type="button" data-toggle="dropdown">
+          <img src="./assets/images/icon-units.svg" />
+          Units
+          <img
+            src="./assets/images/icon-dropdown.svg"
+            alt=""
+            class="icon-dropdown"
+          />
+        </button>
+        <ul class="dropdown-menu">
+          <button class="units-toggle">Switch to Imperial</button>
+          <li class="section-header">Temperature</li>
+          <li>Celsius (&deg;C)</li>
+          <li>Fahrenheit (&deg;F)</li>
+          <li class="divider"></li>
+          <li class="section-header">Wind Speed</li>
+          <li>km/h</li>
+          <li>mph</li>
+          <li class="divider"></li>
+          <li class="section-header">Precipitation</li>
+          <li>Millimeters (mm)</li>
+          <li>Inches (In)</li>
+        </ul>
       </div>
     </header>
     <h1>How's the sky looking today? Feels like</h1>
