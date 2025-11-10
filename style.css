@@ -178,3 +178,29 @@ label img {
 .weather img {
   height: 100px;
 }
+
+.extra-info ul {
+  list-style: none;
+  color: var(--Neutral0);
+  font-size: 25px;
+  font-weight: 300;
+}
+
+.extra-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.extra-info-header {
+  color: var(--Neutral300);
+  font-size: 15px;
+  margin-bottom: 15px;
+}
+
+.extra-info > div {
+  background-color: var(--Neutral700);
+  border-radius: 7px;
+  padding: 15px;
+}
