@@ -34,12 +34,14 @@ body {
   padding: 10px;
   width: 100vw;
   height: 100vh;
+  font-family: "DM Sans", monospace;
 }
 
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 40px;
 }
 
 header img {
@@ -71,4 +73,68 @@ header img {
 
 .dropdown-menu {
   display: none;
+}
+
+h1 {
+  font-family: "Bricolage Grotesque", monospace;
+  font-weight: 700;
+  font-size: 46px;
+  padding: 15px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.searchbar {
+  border: none;
+  background-color: var(--Neutral700);
+  color: var(--Neutral200);
+  width: 100%;
+  height: 100%;
+  font-family: "DM Sans", monospace;
+  font-weight: 400;
+  font-size: 15px;
+  border-radius: 7px;
+}
+
+.searchbar::placeholder {
+  color: var(--Neutral200);
+  opacity: 1;
+}
+
+label {
+  width: 100%;
+  height: 45px;
+  border: none;
+  background-color: var(--Neutral700);
+  border-radius: 7px;
+  text-align: left;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 15px;
+  padding-left: 15px;
+}
+
+label input:focus {
+  outline: none;
+}
+
+label img {
+  height: 25px;
+  filter: invert(7%) sepia(4%) saturate(7%) hue-rotate(250deg) brightness(95%)
+    contrast(98%);
+}
+
+#search-btn {
+  background-color: var(--Blue500);
+  border: none;
+  width: 100%;
+  margin-top: 10px;
+  color: var(--Neutral200);
+  font-family: "DM Sans", monospace;
+  font-weight: 500;
+  font-size: 15px;
+  border-radius: 7px;
+  height: 45px;
+  margin-bottom: 30px;
 }
