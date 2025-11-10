@@ -37,6 +37,8 @@ body {
   font-family: "DM Sans", monospace;
 }
 
+/* header section */
+
 header {
   display: flex;
   justify-content: space-between;
@@ -84,6 +86,7 @@ h1 {
   margin-bottom: 20px;
 }
 
+/* search section */
 .searchbar {
   border: none;
   background-color: var(--Neutral700);
@@ -139,6 +142,7 @@ label img {
   margin-bottom: 30px;
 }
 
+/* main forecast section */
 .forecast-main {
   background: url(./assets/images/bg-today-small.svg);
   background-repeat: no-repeat;
@@ -179,6 +183,7 @@ label img {
   height: 100px;
 }
 
+/* Extra weather info section */
 .extra-info ul {
   list-style: none;
   color: var(--Neutral0);
@@ -203,4 +208,46 @@ label img {
   background-color: var(--Neutral700);
   border-radius: 7px;
   padding: 15px;
+}
+
+/* daily forecast section */
+.daily-forecast h2 {
+  font-size: 15px;
+  margin-top: 25px;
+  margin-bottom: 15px;
+  font-weight: 500;
+}
+
+.daily-forecast ul img {
+  height: 65px;
+}
+
+.daily-forecast ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.daily-forecast-header {
+  font-weight: 300;
+}
+
+.daily-forecast-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.daily-forecast-grid > div {
+  background-color: var(--Neutral700);
+  border-radius: 7px;
+  padding: 10px;
+}
+
+.daily-forecast-row {
+  display: flex;
+  justify-content: space-between;
+  color: var(--Neutral300);
 }
