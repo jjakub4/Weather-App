@@ -37,6 +37,15 @@ body {
   font-family: "DM Sans", monospace;
 }
 
+.attribution {
+  font-size: 11px;
+  text-align: center;
+  margin-top: 30px;
+}
+.attribution a {
+  color: hsl(228, 45%, 44%);
+}
+
 /* header section */
 
 header {
@@ -291,6 +300,8 @@ label img {
   flex-direction: column;
   align-items: center;
   gap: 15px;
+  height: 510px;
+  overflow: auto;
 }
 
 .hourly-forecast ul li img {
