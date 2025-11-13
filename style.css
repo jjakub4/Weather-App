@@ -82,8 +82,47 @@ header img {
   height: 13px;
 }
 
+.dropdown {
+  position: relative;
+}
+
 .dropdown-menu {
   display: none;
+  position: absolute;
+  flex-direction: column;
+  top: 100%;
+  right: 0;
+  background-color: var(--Neutral700);
+  border-radius: 7px;
+  width: 175%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  margin-top: 5px;
+  z-index: 10;
+  padding: 15px;
+  list-style: none;
+}
+
+.divider {
+  height: 2px;
+  background-color: var(--Neutral600);
+  margin: 10px 0 10px 0;
+}
+
+.units-toggle {
+  background: transparent;
+  border: none;
+  color: var(--Neutral0);
+  text-align: left;
+  margin-bottom: 15px;
+  font-weight: 400;
+  font-family: "DM Sans", monospace;
+  cursor: pointer;
+}
+
+.section-header {
+  font-size: 12px;
+  color: var(--Neutral300);
+  margin-bottom: 10px;
 }
 
 h1 {
@@ -301,7 +340,7 @@ label img {
   align-items: center;
   gap: 15px;
   height: 510px;
-  overflow: auto;
+  overflow: scroll;
 }
 
 .hourly-forecast ul li img {
