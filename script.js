@@ -1,42 +1,67 @@
-// importing the open-meteo API
+// Initialize variables for storing the user's latitude and longitude
+let userLatitude;
+let userLongitude;
 
-async function getData() {
-  const response = await fetch(
-    "https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&daily=weather_code,temperature_2m_max,temperature_2m_min&hourly=temperature_2m,weather_code&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m"
-  );
-  const data = await response.json();
-  console.log(data);
-}
-
-getData();
-
-// getting the user's location for weather data
 function getLocation() {
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(showPosition);
+    navigator.geolocation.getCurrentPosition(showPosition, showError);
   } else {
-    return;
+    console.log("Geolocation is not supported by this browser.");
   }
 }
+
 function showPosition(position) {
-  console.log(
-    "Latitude: " +
-      position.coords.latitude +
-      "Longitude: " +
-      position.coords.longitude
-  );
+  userLatitude = position.coords.latitude;
+  userLongitude = position.coords.longitude;
+
+  console.log("Latitude: " + userLatitude + " Longitude: " + userLongitude);
+
+  getData(userLatitude, userLongitude);
 }
+
+// Function to handle location errors (e.g., user denies permission)
+function showError(error) {
+  switch (error.code) {
+    case error.PERMISSION_DENIED:
+      console.log("User denied the request for Geolocation.");
+      break;
+    case error.POSITION_UNAVAILABLE:
+      console.log("Location information is unavailable.");
+      break;
+    case error.TIMEOUT:
+      console.log("The request to get user location timed out.");
+      break;
+    case error.UNKNOWN_ERROR:
+      console.log("An unknown error occurred.");
+      break;
+  }
+}
+
 getLocation();
 
-// searchbar section
+// Function to fetch weather data from Open-Meteo API
+async function getData(lat, lon) {
+  try {
+    const response = await fetch(
+      `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,temperature_2m_max,temperature_2m_min&hourly=temperature_2m,weather_code&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m`
+    );
+    const data = await response.json();
+    console.log(data);
+  } catch (error) {
+    console.error("Error fetching weather data:", error);
+  }
+}
+
+// Searchbar section for user input (if needed)
 const searchbar = document.getElementById("searchbar");
 const searchBtn = document.getElementById("search-btn");
 
-// handling dropdowns
+// Handling dropdowns (unit and hourly options)
 const unitBtn = document.getElementById("unit-dropdown-btn");
 const unitDropdown = document.getElementById("unit-dropdown-menu");
 const hourlyBtn = document.getElementById("dropdown-hourly-btn");
 const hourlyDropdown = document.getElementById("dropdown-hourly-menu");
+
 unitBtn.addEventListener("click", () => {
   unitDropdown.style.display =
     unitDropdown.style.display === "flex" ? "none" : "flex";
@@ -48,7 +73,8 @@ hourlyBtn.addEventListener("click", () => {
 });
 
 document.addEventListener("click", (event) => {
-  if (!unitBtn.contains(event.target) || !hourlyBtn.contains(event.target)) {
+  if (!unitBtn.contains(event.target) && !hourlyBtn.contains(event.target)) {
     unitDropdown.style.display = "none";
+    hourlyDropdown.style.display = "none";
   }
 });
