@@ -340,7 +340,7 @@ label img {
   color: var(--Neutral0);
 }
 
-.hourly-forecast ul {
+.hourly-forecast .time {
   list-style: none;
   display: flex;
   flex-direction: column;
@@ -350,11 +350,11 @@ label img {
   overflow: scroll;
 }
 
-.hourly-forecast ul li img {
+.hourly-forecast .time li img {
   height: 50px;
 }
 
-.hourly-forecast ul li {
+.hourly-forecast .time li {
   background-color: var(--Neutral600);
   height: 50px;
   display: flex;
@@ -393,4 +393,12 @@ label img {
 
 .dropdown-hourly-menu li {
   background-color: transparent !important;
+  margin-bottom: 5px;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.dropdown-hourly-menu li:hover {
+  background-color: var(--Neutral600) !important;
+  border-radius: 5px;
 }
