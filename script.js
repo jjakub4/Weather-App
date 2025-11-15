@@ -52,9 +52,16 @@ async function getData(lat, lon) {
   }
 }
 
-// Searchbar section for user input (if needed)
+// Searchbar section for user input
 const searchbar = document.getElementById("searchbar");
 const searchBtn = document.getElementById("search-btn");
+
+searchBtn.addEventListener("click", getCity);
+
+function getCity() {
+  let city = searchbar.value;
+  console.log(city);
+}
 
 // Handling dropdowns (unit and hourly options)
 const unitBtn = document.getElementById("unit-dropdown-btn");
