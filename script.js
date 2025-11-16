@@ -2,7 +2,7 @@
 let userLatitude;
 let userLongitude;
 
-function getLocation() {
+/* function getLocation() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(showPosition, showError);
   } else {
@@ -46,21 +46,67 @@ async function getData(lat, lon) {
       `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,temperature_2m_max,temperature_2m_min&hourly=temperature_2m,weather_code&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m`
     );
     const data = await response.json();
-    console.log(data);
   } catch (error) {
     console.error("Error fetching weather data:", error);
   }
 }
-
+*/
 // Searchbar section for user input
 const searchbar = document.getElementById("searchbar");
 const searchBtn = document.getElementById("search-btn");
 
 searchBtn.addEventListener("click", getCity);
 
-function getCity() {
-  let city = searchbar.value;
+// getting city coordinates from the input value, to be used to fetch weatehr data
+async function getCity() {
+  let city = searchbar.value.trim();
   console.log(city);
+
+  try {
+    const cityData = await fetch(
+      `https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=10&language=en&format=json`
+    );
+
+    const data = await cityData.json();
+    console.log(data.results[0]);
+
+    const locationDisplay = document.getElementById("location-data");
+
+    if (data.results && data.results.length > 0) {
+      const latitude = data.results[0].latitude;
+      const longitude = data.results[0].longitude;
+      console.log("Latitude:", latitude, "Longitude:", longitude);
+      getCityWeather(latitude, longitude);
+
+      let location =
+        data.results[0].name.toString() +
+        "," +
+        " " +
+        data.results[0].country.toString();
+      locationDisplay.innerText = location;
+    } else {
+      console.log("No results found for the city.");
+    }
+  } catch (error) {
+    console.error("Error fetching city data:", error);
+  }
+}
+
+//using the coords to fetch weather
+async function getCityWeather(latitude, longitude) {
+  try {
+    const weather = await fetch(
+      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weather_code,temperature_2m_max,temperature_2m_min&hourly=temperature_2m,weather_code&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m`
+    );
+    const data = await weather.json();
+    // console.log(data);
+    const temp = data.current.temperature_2m;
+    // console.log(temp);
+    const tempDisplay = document.getElementById("temp");
+    tempDisplay.innerText = temp;
+  } catch (error) {
+    console.error("Error fetching weather data:", error);
+  }
 }
 
 // Handling dropdowns (unit and hourly options)
