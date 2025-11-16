@@ -99,11 +99,20 @@ async function getCityWeather(latitude, longitude) {
       `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weather_code,temperature_2m_max,temperature_2m_min&hourly=temperature_2m,weather_code&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m`
     );
     const data = await weather.json();
-    // console.log(data);
+    console.log(data);
     const temp = data.current.temperature_2m;
+    const feelsLikeTemp = data.current.apparent_temperature;
+    const windSpeed = data.current.wind_speed_10m;
+    const weatherCode = data.current.weather_code;
     // console.log(temp);
+
+    // displaying the weather
     const tempDisplay = document.getElementById("temp");
     tempDisplay.innerText = temp;
+    const feelsLikeDisplay = document.getElementById("feels-like-data");
+    feelsLikeDisplay.innerText = feelsLikeTemp + String.fromCharCode(176);
+    const winsSpeedDisplay = document.getElementById("wind-speed-data");
+    winsSpeedDisplay.innerText = windSpeed + " km/h";
   } catch (error) {
     console.error("Error fetching weather data:", error);
   }
