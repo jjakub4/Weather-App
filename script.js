@@ -60,7 +60,7 @@ searchBtn.addEventListener("click", getCity);
 // getting city coordinates from the input value, to be used to fetch weatehr data
 async function getCity() {
   let city = searchbar.value.trim();
-  console.log(city);
+  // console.log(city);
 
   try {
     const cityData = await fetch(
@@ -68,14 +68,14 @@ async function getCity() {
     );
 
     const data = await cityData.json();
-    console.log(data.results[0]);
+    // console.log(data.results[0]);
 
     const locationDisplay = document.getElementById("location-data");
 
     if (data.results && data.results.length > 0) {
       const latitude = data.results[0].latitude;
       const longitude = data.results[0].longitude;
-      console.log("Latitude:", latitude, "Longitude:", longitude);
+      // console.log("Latitude:", latitude, "Longitude:", longitude);
       getCityWeather(latitude, longitude);
 
       let location =
@@ -100,19 +100,93 @@ async function getCityWeather(latitude, longitude) {
     );
     const data = await weather.json();
     console.log(data);
+
+    const currentTime = data.current.time;
+
+    const date = new Date(currentTime);
+
+    // convert date.current.time to formatted data to be displayed under the location data
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+
+    const weekdays = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+
+    const weekdayName = weekdays[date.getDay()];
+    const monthName = months[date.getMonth()];
+    const day = date.getDate();
+    const year = date.getFullYear();
+
+    const formattedDate = `${weekdayName}, ${monthName} ${day}, ${year}`;
+
+    // Mapping of weather codes to weather icons
+    const weatherIconMatch = {
+      0: "sunny",
+      1: "sunny",
+      2: "partly-cloudy",
+      3: "partly-cloudy",
+      4: "overcast",
+      5: "overcast",
+      6: "fog",
+      7: "fog",
+      8: "drizzle",
+      9: "rain",
+      10: "rain",
+      11: "snow",
+      12: "snow",
+      13: "snow",
+      14: "storm",
+      15: "storm",
+      16: "snow",
+      17: "snow",
+      18: "snow",
+    };
+
+    const weatherCode = data.current.weather_code;
+
+    const weatherIcon = weatherIconMatch[weatherCode] || "sunny";
+
+    console.log(weatherIcon);
+
+    const dateDisplay = document.getElementById("date-display");
+    dateDisplay.innerText = formattedDate;
+
     const temp = data.current.temperature_2m;
     const feelsLikeTemp = data.current.apparent_temperature;
     const windSpeed = data.current.wind_speed_10m;
-    const weatherCode = data.current.weather_code;
-    // console.log(temp);
 
-    // displaying the weather
+    // Display the weather data
+
     const tempDisplay = document.getElementById("temp");
     tempDisplay.innerText = temp;
     const feelsLikeDisplay = document.getElementById("feels-like-data");
     feelsLikeDisplay.innerText = feelsLikeTemp + String.fromCharCode(176);
-    const winsSpeedDisplay = document.getElementById("wind-speed-data");
-    winsSpeedDisplay.innerText = windSpeed + " km/h";
+    const windSpeedDisplay = document.getElementById("wind-speed-data");
+    windSpeedDisplay.innerText = windSpeed + " km/h";
+
+    const weatherIconDisplay = document.getElementById("weather-icon");
+    const weatherIconSrc = `./assets/images/icon-${weatherIcon}.webp`;
+    weatherIconDisplay.src = weatherIconSrc;
+    console.log(weatherIconDisplay);
   } catch (error) {
     console.error("Error fetching weather data:", error);
   }
