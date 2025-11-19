@@ -301,6 +301,7 @@ label img {
 
 .daily-forecast-row {
   display: flex;
+  flex-direction: row !important;
   justify-content: space-between;
   color: var(--Neutral300);
 }

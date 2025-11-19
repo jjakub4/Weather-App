@@ -104,23 +104,6 @@ async function getCityWeather(latitude, longitude) {
     const currentTime = data.current.time;
 
     const date = new Date(currentTime);
-
-    // convert date.current.time to formatted data to be displayed under the location data
-    const months = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-
     const weekdays = [
       "Sunday",
       "Monday",
@@ -131,12 +114,22 @@ async function getCityWeather(latitude, longitude) {
       "Saturday",
     ];
 
-    const weekdayName = weekdays[date.getDay()];
-    const monthName = months[date.getMonth()];
-    const day = date.getDate();
-    const year = date.getFullYear();
+    // Get the current day
+    const currentDayIndex = date.getDay(); // 0 = Sunday, 1 = Monday, etc.
 
-    const formattedDate = `${weekdayName}, ${monthName} ${day}, ${year}`;
+    // Map the next 7 days starting from the current day
+    const nextWeekdays = [];
+    for (let i = 0; i < 7; i++) {
+      nextWeekdays.push(weekdays[(currentDayIndex + i) % 7]);
+    }
+
+    // Display current date in the required format
+    const formattedDate = `${nextWeekdays[0]}, ${date.toLocaleString(
+      "default",
+      { month: "short" }
+    )} ${date.getDate()}, ${date.getFullYear()}`;
+    const dateDisplay = document.getElementById("date-display");
+    dateDisplay.innerText = formattedDate;
 
     // Mapping of weather codes to weather icons
     const weatherIconMatch = {
@@ -162,39 +155,66 @@ async function getCityWeather(latitude, longitude) {
     };
 
     const weatherCode = data.current.weather_code;
-
     const weatherIcon = weatherIconMatch[weatherCode] || "sunny";
 
-    const dateDisplay = document.getElementById("date-display");
-    dateDisplay.innerText = formattedDate;
-
+    // Display current weather
     const temp = data.current.temperature_2m;
-    const feelsLikeTemp = data.current.apparent_temperature;
-    const windSpeed = data.current.wind_speed_10m;
-    const humidity = data.current.relative_humidity_2m;
-    const precipitation = data.current.precipitation;
-
-    // Display the weather data
-
     const tempDisplay = document.getElementById("temp");
     tempDisplay.innerText = temp;
 
+    const feelsLikeTemp = data.current.apparent_temperature;
     const feelsLikeDisplay = document.getElementById("feels-like-data");
     feelsLikeDisplay.innerText = feelsLikeTemp + String.fromCharCode(176);
 
+    const windSpeed = data.current.wind_speed_10m;
     const windSpeedDisplay = document.getElementById("wind-speed-data");
     windSpeedDisplay.innerText = windSpeed + " km/h";
 
+    const humidity = data.current.relative_humidity_2m;
     const humidityDisplay = document.getElementById("humidity-data");
     humidityDisplay.innerText = humidity + "%";
 
+    const precipitation = data.current.precipitation;
     const precipitationDisplay = document.getElementById("precipitation-data");
     precipitationDisplay.innerText = precipitation + " mm";
 
     const weatherIconDisplay = document.getElementById("weather-icon");
-    const weatherIconSrc = `./assets/images/icon-${weatherIcon}.webp`;
-    weatherIconDisplay.src = weatherIconSrc;
-    console.log(weatherIconDisplay);
+    weatherIconDisplay.src = `./assets/images/icon-${weatherIcon}.webp`;
+
+    // Daily forecast section
+    const dailyTempMax = data.daily.temperature_2m_max;
+    const dailyTempMin = data.daily.temperature_2m_min;
+    const dailyWeatherCode = data.daily.weather_code;
+    const dailyWeatherIconDisplay =
+      document.querySelectorAll(`#daily-weather-icon`);
+
+    // Get the daily forecast grid
+    const dailyForecastGrid = document.querySelector(".daily-forecast-grid");
+
+    // Loop through each day in the daily forecast
+    dailyForecastGrid.innerHTML = ""; // Clear existing forecast
+    for (let i = 0; i < 7; i++) {
+      const forecastItem = document.createElement("div");
+      const day = nextWeekdays[i];
+      const maxTemp = dailyTempMax[i];
+      const minTemp = dailyTempMin[i];
+      const weatherCodeDaily = dailyWeatherCode[i];
+      console.log(weatherCodeDaily);
+
+      // Build the forecast for the day
+      forecastItem.innerHTML = `
+        <ul>
+          <li class="daily-forecast-header">${day}</li>
+          <li><img src="./assets/images/icon-${weatherIcon}.webp" alt="${day} weather icon"></li>
+          <div class="daily-forecast-row">
+          <li>${maxTemp}&deg;</li>
+          <li>${minTemp}&deg;</li>
+          </div>
+        </ul>
+      `;
+
+      dailyForecastGrid.appendChild(forecastItem);
+    }
   } catch (error) {
     console.error("Error fetching weather data:", error);
   }
