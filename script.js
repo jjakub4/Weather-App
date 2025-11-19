@@ -96,7 +96,7 @@ async function getCity() {
 async function getCityWeather(latitude, longitude) {
   try {
     const weather = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weather_code,temperature_2m_max,temperature_2m_min&hourly=temperature_2m,weather_code&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m`
+      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,precipitation_sum&hourly=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weather_code,wind_speed_10m&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,precipitation,weather_code`
     );
     const data = await weather.json();
     console.log(data);
@@ -165,23 +165,31 @@ async function getCityWeather(latitude, longitude) {
 
     const weatherIcon = weatherIconMatch[weatherCode] || "sunny";
 
-    console.log(weatherIcon);
-
     const dateDisplay = document.getElementById("date-display");
     dateDisplay.innerText = formattedDate;
 
     const temp = data.current.temperature_2m;
     const feelsLikeTemp = data.current.apparent_temperature;
     const windSpeed = data.current.wind_speed_10m;
+    const humidity = data.current.relative_humidity_2m;
+    const precipitation = data.current.precipitation;
 
     // Display the weather data
 
     const tempDisplay = document.getElementById("temp");
     tempDisplay.innerText = temp;
+
     const feelsLikeDisplay = document.getElementById("feels-like-data");
     feelsLikeDisplay.innerText = feelsLikeTemp + String.fromCharCode(176);
+
     const windSpeedDisplay = document.getElementById("wind-speed-data");
     windSpeedDisplay.innerText = windSpeed + " km/h";
+
+    const humidityDisplay = document.getElementById("humidity-data");
+    humidityDisplay.innerText = humidity + "%";
+
+    const precipitationDisplay = document.getElementById("precipitation-data");
+    precipitationDisplay.innerText = precipitation + " mm";
 
     const weatherIconDisplay = document.getElementById("weather-icon");
     const weatherIconSrc = `./assets/images/icon-${weatherIcon}.webp`;
