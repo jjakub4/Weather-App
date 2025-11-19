@@ -104,18 +104,9 @@ async function getCityWeather(latitude, longitude) {
     const currentTime = data.current.time;
 
     const date = new Date(currentTime);
-    const weekdays = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ];
+    const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-    // Get the current day
-    const currentDayIndex = date.getDay(); // 0 = Sunday, 1 = Monday, etc.
+    const currentDayIndex = date.getDay(); //
 
     // Map the next 7 days starting from the current day
     const nextWeekdays = [];
@@ -185,30 +176,26 @@ async function getCityWeather(latitude, longitude) {
     const dailyTempMax = data.daily.temperature_2m_max;
     const dailyTempMin = data.daily.temperature_2m_min;
     const dailyWeatherCode = data.daily.weather_code;
-    const dailyWeatherIconDisplay =
-      document.querySelectorAll(`#daily-weather-icon`);
 
-    // Get the daily forecast grid
     const dailyForecastGrid = document.querySelector(".daily-forecast-grid");
 
-    // Loop through each day in the daily forecast
-    dailyForecastGrid.innerHTML = ""; // Clear existing forecast
+    dailyForecastGrid.innerHTML = "";
     for (let i = 0; i < 7; i++) {
       const forecastItem = document.createElement("div");
       const day = nextWeekdays[i];
       const maxTemp = dailyTempMax[i];
       const minTemp = dailyTempMin[i];
       const weatherCodeDaily = dailyWeatherCode[i];
-      console.log(weatherCodeDaily);
 
-      // Build the forecast for the day
+      const weatherIcon = weatherIconMatch[weatherCodeDaily] || "sunny"; // Default to sunny if code doesn't match
+
       forecastItem.innerHTML = `
         <ul>
           <li class="daily-forecast-header">${day}</li>
-          <li><img src="./assets/images/icon-${weatherIcon}.webp" alt="${day} weather icon"></li>
+          <li><img src="./assets/images/icon-${weatherIcon}.webp" alt="${day} weather icon" class="daily-weather-icon"></li>
           <div class="daily-forecast-row">
-          <li>${maxTemp}&deg;</li>
-          <li>${minTemp}&deg;</li>
+            <li>${maxTemp}&deg;</li>
+            <li>${minTemp}&deg;</li>
           </div>
         </ul>
       `;
