@@ -202,6 +202,41 @@ async function getCityWeather(latitude, longitude) {
 
       dailyForecastGrid.appendChild(forecastItem);
     }
+
+    // hourly forecast section
+    const hourlyTime = document.querySelector(".time");
+    hourlyTime.innerHTML = "";
+    const hourlyWeatherCode = data.hourly.weather_code;
+    const hourlyTemp = data.hourly.temperature_2m;
+    const hour = data.hourly.time;
+
+    for (let i = 0; i < 24; i++) {
+      const hourlyItem = document.createElement("div");
+
+      const date = new Date(hour[i]);
+      const options = {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      };
+      const time = date.toLocaleString("en-US", options);
+
+      const hourlyWeather = hourlyWeatherCode[i];
+      const timeTemp = hourlyTemp[i];
+      const weatherIcon = weatherIconMatch[hourlyWeather] || "sunny";
+
+      hourlyItem.innerHTML = `
+    <li>
+      <div class="time-icon">
+        <img src="./assets/images/icon-${weatherIcon}.webp" alt="${weatherIcon} icon">
+        ${time}
+      </div>
+      ${timeTemp}&deg;
+    </li>
+  `;
+
+      hourlyTime.appendChild(hourlyItem);
+    }
   } catch (error) {
     console.error("Error fetching weather data:", error);
   }
