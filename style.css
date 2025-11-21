@@ -102,6 +102,10 @@ header img {
   list-style: none;
 }
 
+.currentTempUnit {
+  color: red;
+}
+
 .dropdown-menu li {
   margin-bottom: 5px;
 }

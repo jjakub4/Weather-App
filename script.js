@@ -1,56 +1,29 @@
-// Initialize variables for storing the user's latitude and longitude
-let userLatitude;
-let userLongitude;
+// Handling the unit dropdown
+const unitBtn = document.getElementById("unit-dropdown-btn");
+const unitDropdown = document.getElementById("unit-dropdown-menu");
 
-/* function getLocation() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(showPosition, showError);
-  } else {
-    console.log("Geolocation is not supported by this browser.");
+unitBtn.addEventListener("click", () => {
+  unitDropdown.style.display =
+    unitDropdown.style.display === "flex" ? "none" : "flex";
+});
+
+function changeUnit(event) {
+  let currentunit = "Celsius";
+  let currentSpeed = "kph";
+  let currentPrecipitation = "mm";
+
+  if (event.target.tagName.toLowerCase() === "li") {
+    let activeTempUnit = unitDropdown.querySelector(".currentTempUnit");
+
+    if (activeTempUnit && activeTempUnit !== event.target) {
+      console.log("You have clicked an unactive item!", activeTempUnit);
+      activeTempUnit.classList.remove("currentTempUnit");
+    }
+    event.target.classList.add("currentTempUnit");
   }
 }
+unitDropdown.addEventListener("click", changeUnit);
 
-function showPosition(position) {
-  userLatitude = position.coords.latitude;
-  userLongitude = position.coords.longitude;
-
-  console.log("Latitude: " + userLatitude + " Longitude: " + userLongitude);
-
-  getData(userLatitude, userLongitude);
-}
-
-// Function to handle location errors (e.g., user denies permission)
-function showError(error) {
-  switch (error.code) {
-    case error.PERMISSION_DENIED:
-      console.log("User denied the request for Geolocation.");
-      break;
-    case error.POSITION_UNAVAILABLE:
-      console.log("Location information is unavailable.");
-      break;
-    case error.TIMEOUT:
-      console.log("The request to get user location timed out.");
-      break;
-    case error.UNKNOWN_ERROR:
-      console.log("An unknown error occurred.");
-      break;
-  }
-}
-
-getLocation();
-
-// Function to fetch weather data from Open-Meteo API
-async function getData(lat, lon) {
-  try {
-    const response = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,temperature_2m_max,temperature_2m_min&hourly=temperature_2m,weather_code&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m`
-    );
-    const data = await response.json();
-  } catch (error) {
-    console.error("Error fetching weather data:", error);
-  }
-}
-*/
 // Searchbar section for user input
 const searchbar = document.getElementById("searchbar");
 const searchBtn = document.getElementById("search-btn");
@@ -93,7 +66,13 @@ async function getCity() {
 }
 
 //using the coords to fetch weather
-async function getCityWeather(latitude, longitude) {
+async function getCityWeather(
+  latitude,
+  longitude,
+  currentunit,
+  currentSpeed,
+  currentPrecipitation
+) {
   try {
     const weather = await fetch(
       `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,precipitation_sum&hourly=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weather_code,wind_speed_10m&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,precipitation,weather_code`
@@ -241,17 +220,9 @@ async function getCityWeather(latitude, longitude) {
     console.error("Error fetching weather data:", error);
   }
 }
-
-// Handling dropdowns (unit and hourly options)
-const unitBtn = document.getElementById("unit-dropdown-btn");
-const unitDropdown = document.getElementById("unit-dropdown-menu");
+// handling unused dropdowns (TODO dropdowns)
 const hourlyBtn = document.getElementById("dropdown-hourly-btn");
 const hourlyDropdown = document.getElementById("dropdown-hourly-menu");
-
-unitBtn.addEventListener("click", () => {
-  unitDropdown.style.display =
-    unitDropdown.style.display === "flex" ? "none" : "flex";
-});
 
 hourlyBtn.addEventListener("click", () => {
   hourlyDropdown.style.display =
