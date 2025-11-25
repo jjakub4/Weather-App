@@ -34,12 +34,17 @@
         <ul class="dropdown-menu" id="unit-dropdown-menu">
           <button class="units-toggle">Switch to Imperial</button>
           <li class="section-header">Temperature</li>
-          <li id="celsius-btn" class="currentTempUnit">Celsius (&deg;C)</li>
-          <li id="fahrenheit-btn">Fahrenheit (&deg;F)</li>
+          <div id="temp-section">
+            <li id="celsius-btn" class="currentTempUnit">Celsius (&deg;C)</li>
+            <li id="fahrenheit-btn">Fahrenheit (&deg;F)</li>
+          </div>
           <li class="divider"></li>
           <li class="section-header">Wind Speed</li>
-          <li id="kph-btn">km/h</li>
-          <li id="mph-btn">mph</li>
+          <div id="wind-section">
+
+            <li id="kph-btn" class="currentWindUnit">km/h</li>
+            <li id="mph-btn">mph</li>
+          </div>
           <li class="divider"></li>
           <li class="section-header">Precipitation</li>
           <li id="mm-btn">Millimeters (mm)</li>

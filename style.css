@@ -102,7 +102,9 @@ header img {
   list-style: none;
 }
 
-.currentTempUnit {
+.currentTempUnit,
+.currentWindUnit,
+.currentPrecUnit {
   color: red;
 }
 
