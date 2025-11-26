@@ -1,7 +1,12 @@
+// handling the unit dropdown
 const unitBtn = document.getElementById("unit-dropdown-btn");
 const unitDropdown = document.getElementById("unit-dropdown-menu");
 const tempSection = document.getElementById("temp-section");
 const windSection = document.getElementById("wind-section");
+const precSection = document.getElementById("prec-section");
+const unitsToggle = document.getElementById("units-toggle");
+
+unitsToggle.addEventListener("click", () => {});
 
 unitBtn.addEventListener("click", () => {
   unitDropdown.style.display =
@@ -56,6 +61,27 @@ function changeWindUnit(event) {
 }
 windSection.addEventListener("click", changeWindUnit);
 
+function changePrecUnit(event) {
+  let activePrecUnit = precSection.querySelector(".currentPrecUnit");
+
+  if (activePrecUnit && activePrecUnit !== event.target) {
+    activePrecUnit.classList.remove("currentPrecUnit");
+  }
+
+  event.target.classList.add("currentPrecUnit");
+
+  if (event.target.textContent === "Millimeters (mm)") {
+    currentUnits[1].currentPrecUnit = "mm";
+    console.log("added mm!");
+  } else {
+    currentUnits[1].currentPrecUnit = "in";
+    console.log("added In!");
+  }
+
+  console.log(currentUnits);
+}
+precSection.addEventListener("click", changePrecUnit);
+
 // Searchbar section for user input
 const searchbar = document.getElementById("searchbar");
 const searchBtn = document.getElementById("search-btn");
@@ -100,25 +126,28 @@ async function getCity() {
 // using the coords to fetch weather
 async function getCityWeather(latitude, longitude) {
   try {
-    let apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,precipitation_sum&hourly=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weather_code,wind_speed_10m&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,precipitation,weather_code`;
+    let tempValue = "";
+    let windValue = "";
+    let precValue = "";
 
     currentUnits.forEach((unit) => {
       if (unit.currentTempUnit === "Fahrenheit") {
-        apiUrl += "&temperature_unit=fahrenheit&";
+        tempValue = "&temperature_unit=fahrenheit&";
         console.log("added fahrenheit!");
       }
 
       if (unit.currentWindUnit === "mph") {
-        apiUrl += "&wind_speed_unit=mph&";
+        windValue = "&wind_speed_unit=mph&";
         console.log("added mph!");
       }
 
       if (unit.currentPrecUnit === "in") {
-        apiUrl += "&precipitation_unit=inch&";
+        precValue = "&precipitation_unit=inch&";
         console.log("added inch!");
       }
     });
 
+    let apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,precipitation_sum&hourly=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weather_code,wind_speed_10m&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,precipitation,weather_code${tempValue}${windValue}${precValue}`;
     console.log("Final API URL:", apiUrl);
 
     // Fetch the weather data
@@ -182,14 +211,17 @@ async function getCityWeather(latitude, longitude) {
 
     const windSpeed = data.current.wind_speed_10m;
     const windSpeedDisplay = document.getElementById("wind-speed-data");
-    windSpeedDisplay.innerText = windSpeed + " km/h";
+    windSpeedDisplay.innerText =
+      windSpeed + " " + data.current_units.wind_speed_10m;
 
     const humidity = data.current.relative_humidity_2m;
     const humidityDisplay = document.getElementById("humidity-data");
     humidityDisplay.innerText = humidity + "%";
 
-    const precipitation = data.current.precipitation;
+    const precipitation = data.current.precipitation.toFixed(1);
     const precipitationDisplay = document.getElementById("precipitation-data");
+    precipitationDisplay.innerText =
+      precipitation + " " + data.current_units.precipitation;
 
     const weatherIconDisplay = document.getElementById("weather-icon");
     weatherIconDisplay.src = `./assets/images/icon-${weatherIcon}.webp`;
