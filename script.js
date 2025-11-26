@@ -6,7 +6,7 @@ const windSection = document.getElementById("wind-section");
 const precSection = document.getElementById("prec-section");
 const unitsToggle = document.getElementById("units-toggle");
 
-unitsToggle.addEventListener("click", () => {});
+// unitsToggle.addEventListener("click", () => {});
 
 unitBtn.addEventListener("click", () => {
   unitDropdown.style.display =
@@ -155,7 +155,6 @@ async function getCityWeather(latitude, longitude) {
     const data = await weather.json();
     console.log(data);
 
-    // Process the weather data as usual
     const currentTime = data.current.time;
     const date = new Date(currentTime);
     const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -264,9 +263,7 @@ async function getCityWeather(latitude, longitude) {
     const hourlyTemp = data.hourly.temperature_2m;
     const hour = data.hourly.time;
 
-    for (let i = 0; i < 24; i++) {
-      const hourlyItem = document.createElement("div");
-
+    for (let i = 0; i < 25; i++) {
       const date = new Date(hour[i]);
       const options = {
         hour: "2-digit",
@@ -279,16 +276,18 @@ async function getCityWeather(latitude, longitude) {
       const timeTemp = hourlyTemp[i];
       const weatherIcon = weatherIconMatch[hourlyWeather] || "sunny";
 
+      // Create the hourly item
+      const hourlyItem = document.createElement("li");
+
       hourlyItem.innerHTML = `
-    <li>
-      <div class="time-icon">
-        <img src="./assets/images/icon-${weatherIcon}.webp" alt="${weatherIcon} icon">
-        ${time}
-      </div>
-      ${timeTemp}&deg;
-    </li>
+    <div class="time-icon">
+      <span class="hourly-item-time">${time}</span>
+      <img src="./assets/images/icon-${weatherIcon}.webp" alt="${weatherIcon} icon">
+    </div>
+    <span class="hourly-item-temp">${timeTemp}&deg;</span>
   `;
 
+      // Append the hourly item to the hourly forecast list
       hourlyTime.appendChild(hourlyItem);
     }
   } catch (error) {
